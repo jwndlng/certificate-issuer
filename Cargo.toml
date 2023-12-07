@@ -1,0 +1,20 @@
+[package]
+name = "domain_management"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+anyhow = "1.0.75"
+config = "0.13.4"
+dotenv = "0.15.0"
+instant-acme = "0.4.1"
+reqwest = { version = "0.11.22", features = ["json", "blocking"] }
+serde = "1.0.193"
+serde_json = "1.0.108"
+serde-xml-rs = "0.6.0"
+tokio = { version = "1", features = ["full"] }
+tracing = "0.1.40"
+tracing-subscriber = "0.3.18"
+rcgen = "0.11.3"

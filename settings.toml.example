@@ -1,0 +1,14 @@
+[common]
+domain = "yourdomain.com"
+certificate_name = "cert_name"
+output_path = "/path/to/store/output"
+account_path = "/path/to/my/account"
+
+[acme]
+account_id = "842886087"
+key_path = "/path/to/credentials.json"
+
+[plesk]
+url = ""
+username = ""
+site_id = "3839"
