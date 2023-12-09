@@ -62,12 +62,12 @@ async fn main() -> Result<(), Error> {
                         error!("Something went wrong: {:?}", e);
                     }
                 }
-            },
+            }
             OrderStatus::Ready => {
                 info!("OrderStatus is ready.");
                 acme.finalize(settings.common.output_path.clone()).await?;
                 break;
-            },
+            }
             OrderStatus::Valid => {
                 info!("OrderStatus is valid.");
                 break;
@@ -75,7 +75,7 @@ async fn main() -> Result<(), Error> {
             OrderStatus::Invalid => { 
                 info!("OrderStatus is invalid.");
                 panic!("Order is invalid. Please review process.");
-            },
+            }
             _ => {
                 sleep(Duration::from_secs(1)).await;
             }

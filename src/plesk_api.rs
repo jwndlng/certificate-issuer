@@ -1,5 +1,5 @@
-use std::io;
 use std::error::Error;
+use std::io;
 use reqwest::{Client, RequestBuilder};
 use serde::{Deserialize, Serialize};
 use serde_xml_rs::from_str;
@@ -16,7 +16,7 @@ pub struct PleskAPI {
 
 #[derive(Debug, Serialize, Deserialize, PartialEq)]
 pub struct PleskDNSResponse {
-    dns: PleskDNSResponseAction
+    dns: PleskDNSResponseAction,
 }
 
 #[derive(Debug, Serialize, Deserialize, PartialEq)]
@@ -27,7 +27,7 @@ pub struct PleskDNSResponseAction {
 
 #[derive(Debug, Serialize, Deserialize, PartialEq)]
 pub struct PleskDNSResponseResult {
-    result: PleskDNSResponseData
+    result: PleskDNSResponseData,
 }
 
 #[derive(Debug, Serialize, Deserialize, PartialEq)]
@@ -62,7 +62,8 @@ impl PleskAPI {
     }
 
     pub async fn add_challenge(&self, challenge_string: String) -> Result<String, Box<dyn Error>> {
-        let response = self.create_request()
+        let response = self
+            .create_request()
             .body(format!(
                 r#"
                     <packet>
@@ -75,9 +76,13 @@ impl PleskAPI {
                             </add_rec>
                         </dns>
                     </packet>
-                "#, self.site_id, crate::acme::ACME_SUBDOMAIN, challenge_string
-                )
-            ).send().await?;
+                "#,
+                self.site_id,
+                crate::acme::ACME_SUBDOMAIN,
+                challenge_string
+            ))
+            .send()
+            .await?;
 
         let response_text = response.text().await?;
 
@@ -92,7 +97,10 @@ impl PleskAPI {
             if dns_resp_record.result.status == "error" {
                 let error = io::Error::new(
                     io::ErrorKind::Other,
-                    format!("Plesk API error: {}", dns_resp_record.result.errtext.unwrap())
+                    format!(
+                        "Plesk API error: {}",
+                        dns_resp_record.result.errtext.unwrap()
+                    ),
                 );
                 return Err(Box::new(error));
             }
@@ -101,14 +109,15 @@ impl PleskAPI {
         }
         let error = io::Error::new(
             io::ErrorKind::Other,
-            format!("Response could not be parsed: {}", response_text)
+            format!("Response could not be parsed: {}", response_text),
         );
         Err(Box::new(error))
     }
 
 
     pub async fn remove_challenge(&self, record_id: String) -> Result<(), Box<dyn Error>> {
-        let response = self.create_request()
+        let response = self
+            .create_request()
             .body(format!(
                 r#"
                     <packet>
@@ -120,9 +129,12 @@ impl PleskAPI {
                             </del_rec>
                         </dns>
                     </packet>
-                "#, record_id
+                "#,
+                record_id
                 )
-            ).send().await?;
+            )
+            .send()
+            .await?;
 
         let response_text = response.text().await?;
 
@@ -137,7 +149,10 @@ impl PleskAPI {
             if dns_resp_record.result.status == "error" {
                 let error = io::Error::new(
                     io::ErrorKind::Other,
-                    format!("Plesk API error: {}", dns_resp_record.result.errtext.unwrap())
+                    format!(
+                        "Plesk API error: {}",
+                        dns_resp_record.result.errtext.unwrap()
+                    ),
                 );
                 return Err(Box::new(error));
             }
@@ -146,7 +161,7 @@ impl PleskAPI {
 
         let error = io::Error::new(
             io::ErrorKind::Other,
-            format!("Response could not be parsed: {}", response_text)
+            format!("Response could not be parsed: {}", response_text),
         );
         Err(Box::new(error))
     }
