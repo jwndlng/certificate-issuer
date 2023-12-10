@@ -16,9 +16,10 @@ jobs:
       - name: Build
         run: |
           cargo build --release
-      - name: Create new release
-        uses: Shopify/upload-to-release@v2.0.0
+      - name: Publish release
+        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844
         with:
           name: certificate-issuer
-          path: target/release
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          files: |
+            target/release/certificate-issuer
+          token: ${{ secrets.GITHUB_TOKEN }}
