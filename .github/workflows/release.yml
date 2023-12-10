@@ -1,0 +1,24 @@
+name: Application release
+
+on:
+  push:
+    tags:
+      - v*
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Update rust toolchain
+        run: |
+          rustup update
+      - name: Build
+        run: |
+          cargo build --release
+      - name: Create new release
+        uses: Shopify/upload-to-release@v2.0.0
+        with:
+          name: certificate-issuer
+          path: target/release
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
