@@ -22,7 +22,7 @@ jobs:
       - name: Publish release
         uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844
         with:
-          name: certificate-issuer
+          name: ${{ github.ref_name }}-certificate-issuer
           files: |
             target/release/certificate-issuer
           token: ${{ secrets.GITHUB_TOKEN }}
