@@ -8,7 +8,9 @@ pub struct CommonSettings {
     pub account_path: String,
     pub certificate_name: String,
     pub domain: String,
+    pub check_domain: String,
     pub output_path: String,
+    pub renewal_days: u32,
 }
 
 #[derive(Debug, Deserialize)]

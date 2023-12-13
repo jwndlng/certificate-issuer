@@ -1,6 +1,7 @@
 mod acme;
-mod settings;
+mod certificate;
 mod plesk_api;
+mod settings;
 
 use std::time::Duration;
 
@@ -28,6 +29,13 @@ async fn main() -> Result<(), Error> {
         settings.plesk.username,
         settings.plesk.password,
     );
+
+    let cert = certificate::Certificate::from_domain(settings.common.check_domain)?;
+    if !cert.expires_in_days(settings.common.renewal_days) {
+        info!("Skip exeuction since the certificate does not expire in {:?} days", settings.common.renewal_days);
+        return Ok(());
+    }
+
     let mut dns_record_id: String = String::new();
 
     let acme = match Acme::from_file(&settings.acme.key_path, &settings.common.domain).await {

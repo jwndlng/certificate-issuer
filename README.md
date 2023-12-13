@@ -18,7 +18,7 @@ The configuration of the application is managed via the `settings.toml` file. Se
 - [x] Introduce versioning
 - [ ] Implement static tests
 - [x] GitHub Workflows to automatically build and release the versions on GitHub
-- [ ] Implement a renewal date, so that valid certificates are only renewed if renewal date is passed.
+- [x] Implement a renewal date, so that valid certificates are only renewed if renewal date is passed.
 
 ## License
 
