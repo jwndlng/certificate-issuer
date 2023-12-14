@@ -13,6 +13,11 @@ Cargo.lock
 # MSVC Windows builds of rustc generate these, which store debugging information
 *.pdb
 
+# Environment variable file
+.env
+.env.test
+.envrc
+
 # Custom
 settings.toml
 .vscode/

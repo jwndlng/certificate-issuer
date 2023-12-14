@@ -41,7 +41,11 @@ impl Settings {
     pub fn new() -> Result<Self, ConfigError> {
         let settings = Config::builder()
             .add_source(File::with_name("settings").required(false))
-            .add_source(Environment::with_prefix("CEIU_"))
+            .add_source(
+                Environment::with_prefix("CEIU")
+                .separator("_")
+                .try_parsing(true)
+            )
             .build()?;
         settings.try_deserialize()
     }
