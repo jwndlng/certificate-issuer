@@ -99,7 +99,7 @@ impl Acme {
                 terms_of_service_agreed: true,
                 only_return_existing: false,
             },
-            LetsEncrypt::Staging.url(),
+            LetsEncrypt::Production.url(),
             None,
         )
         .await?;

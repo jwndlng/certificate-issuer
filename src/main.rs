@@ -30,7 +30,7 @@ async fn main() -> Result<(), Error> {
     match app.run(&settings).await {
         Ok(()) => Ok(()),
         Err(e) => {
-            error!("Couldn't add challenge. Reason: {:?}", e);
+            error!("Application failed. Reason: {:?}", e);
             panic!("Abort program.")
         }
     }
