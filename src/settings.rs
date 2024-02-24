@@ -2,7 +2,7 @@
 use config::{Config, ConfigError, Environment, File};
 use serde::Deserialize;
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 #[allow(unused)]
 pub struct CommonSettings {
     pub account_path: String,
@@ -13,14 +13,14 @@ pub struct CommonSettings {
     pub renewal_days: u32,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 #[allow(unused)]
 pub struct AcmeSettings {
     pub account_id: String,
     pub key_path: String,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 #[allow(unused)]
 pub struct PleskSettings {
     pub password: String,
@@ -29,7 +29,7 @@ pub struct PleskSettings {
     pub username: String,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 #[allow(unused)]
 pub struct Settings {
     pub acme: AcmeSettings,

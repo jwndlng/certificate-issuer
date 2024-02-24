@@ -3,6 +3,7 @@ use std::io;
 use reqwest::{Client, RequestBuilder};
 use serde::{Deserialize, Serialize};
 use serde_xml_rs::from_str;
+use tracing::info;
 
 const PLESK_API_PATH: &str = "/enterprise/control/agent.php";
 
@@ -62,25 +63,26 @@ impl PleskAPI {
     }
 
     pub async fn add_challenge(&self, challenge_string: String) -> Result<String, Box<dyn Error>> {
+        let payload = format!(
+            r#"
+                <packet>
+                    <dns>
+                        <add_rec>
+                            <site-id>{}</site-id>
+                            <type>TXT</type>
+                            <host>{}</host>
+                            <value>{}</value>
+                        </add_rec>
+                    </dns>
+                </packet>
+            "#,
+            self.site_id,
+            crate::acme::ACME_SUBDOMAIN,
+            challenge_string
+        );
         let response = self
             .create_request()
-            .body(format!(
-                r#"
-                    <packet>
-                        <dns>
-                            <add_rec>
-                                <site-id>{}</site-id>
-                                <type>TXT</type>
-                                <host>{}</host>
-                                <value>{}</value>
-                            </add_rec>
-                        </dns>
-                    </packet>
-                "#,
-                self.site_id,
-                crate::acme::ACME_SUBDOMAIN,
-                challenge_string
-            ))
+            .body(payload)
             .send()
             .await?;
 

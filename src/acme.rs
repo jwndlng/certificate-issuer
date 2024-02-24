@@ -38,21 +38,23 @@ impl Acme {
 
         order.set_challenge_ready(&challenge?.url).await.context("Failed to set challenge to ready")?;
 
-        let mut tries = 1u8;
-        let mut delay = Duration::from_secs(2);
+        let mut retries = 1u8;
+        let mut delay = Duration::from_secs(5);
         loop {
             sleep(delay).await;
             let state = order.refresh().await?;
-            if let OrderStatus::Ready | OrderStatus::Invalid = state.status {
-                info!("Order state: {:#?}", state.status);
+            if OrderStatus::Ready == state.status {
                 break;
             }
+            if OrderStatus::Invalid == state.status {
+                return Err(anyhow!("order is invalid"));
+            }
             delay *= 2;
-            tries += 1;
-            match tries < 5 {
-                true => info!(?state, tries, "order is not ready, waiting {delay:?}"),
+            retries += 1;
+            match retries < 5 {
+                true => info!(?state, retries, "order is not ready, waiting {delay:?}"),
                 false => {
-                    error!(tries, "order is not ready: {state:#?}");
+                    error!(retries, "order is not ready: {state:#?}");
                     return Err(anyhow::anyhow!("order is not ready"));
                 }
             }
@@ -97,7 +99,7 @@ impl Acme {
                 terms_of_service_agreed: true,
                 only_return_existing: false,
             },
-            LetsEncrypt::Production.url(),
+            LetsEncrypt::Staging.url(),
             None,
         )
         .await?;
