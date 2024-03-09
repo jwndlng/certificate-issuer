@@ -17,12 +17,12 @@ impl Certificate {
         Ok(cert)
     }
 
-    pub fn expires_in_days(&self, days: u32) -> bool {
+    pub fn expires_in_days(&self, days: u32) -> Result<bool, Error> {
         if let Some(x509) = &self.x509 {
-            let check_date = Asn1Time::days_from_now(days).unwrap();
+            let check_date = Asn1Time::days_from_now(days)?;
             let expire_date = x509.not_after();
-            return check_date > expire_date;
+            return Ok(check_date > expire_date);
         }
-        false
+        Ok(false)
     }
 }

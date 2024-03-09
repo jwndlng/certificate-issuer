@@ -2,7 +2,7 @@ use std::time::Duration;
 use anyhow::{Error, Context};
 use instant_acme::OrderStatus;
 use tokio::time::sleep;
-use tracing::{error, info};
+use tracing::{error, info, warn};
 
 use crate::acme::Acme;
 use crate::settings::Settings;
