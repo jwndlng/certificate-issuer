@@ -3,7 +3,6 @@ use std::io;
 use reqwest::{Client, RequestBuilder};
 use serde::{Deserialize, Serialize};
 use serde_xml_rs::from_str;
-use tracing::info;
 
 const PLESK_API_PATH: &str = "/enterprise/control/agent.php";
 
