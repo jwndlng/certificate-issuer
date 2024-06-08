@@ -47,7 +47,7 @@ impl Acme {
                 break;
             }
             if OrderStatus::Invalid == state.status {
-                return Err(anyhow!("order is invalid"));
+                error!("order is invalid");
             }
             delay *= 2;
             retries += 1;
