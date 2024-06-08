@@ -19,10 +19,18 @@ jobs:
       - name: Build
         run: |
           cargo build --release
+      - name: Generate Checksums
+        run: |
+          sha256sum target/release/certificate-issuer > sha256sum.txt
+          md5sum target/release/certificate-issuer > md5sum.txt
       - name: Publish release
-        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844
+        uses: softprops/action-gh-release@69320dbe05506a9a39fc8ae11030b214ec2d1f87
         with:
-          name: ${{ github.ref_name }}-certificate-issuer
+          name: ${{ github.ref_name }}
           files: |
             target/release/certificate-issuer
+            LICENSE.md
+            sha256sum.txt
+            md5sum.txt
           token: ${{ secrets.GITHUB_TOKEN }}
+          generate_release_notes: true
