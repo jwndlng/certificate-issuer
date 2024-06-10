@@ -51,11 +51,10 @@ impl Acme {
             }
             delay *= 2;
             retries += 1;
-            match retries < 5 {
+            match retries < 10 {
                 true => info!(?state, retries, "order is not ready, waiting {delay:?}"),
                 false => {
-                    error!(retries, "order is not ready: {state:#?}");
-                    return Err(anyhow::anyhow!("order is not ready"));
+                    error!(retries, "Order is not ready: {state:#?}");
                 }
             }
         }
