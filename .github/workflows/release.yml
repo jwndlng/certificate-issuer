@@ -1,6 +1,8 @@
 name: Application release
 
 permissions:
+  id-token: write
+  attestations: write
   contents: write
 
 on:
@@ -23,6 +25,10 @@ jobs:
         run: |
           sha256sum target/release/certificate-issuer > sha256sum.txt
           md5sum target/release/certificate-issuer > md5sum.txt
+      - name: Attest Build Provenance
+        uses: actions/attest-build-provenance@v1
+        with:
+          subject-path: target/release/certificate-issuer
       - name: Publish release
         uses: softprops/action-gh-release@69320dbe05506a9a39fc8ae11030b214ec2d1f87
         with:
